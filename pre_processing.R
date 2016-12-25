@@ -92,6 +92,15 @@ NASpecialLevel <- function(feature, name)
 
 InputConstruction <- function(all.features, data.info)
 {
+  # Generates the estimation data according with the information provided
+  # 
+  # Args:
+  #   all.features: All features avaiable
+  #   data.info: Information about the features (generate level or dummy)
+  #
+  # Returns:
+  #   x.matrix: X matrix ready for estimation
+  #
   x.matrix <- data.frame()
   for ( i in 1:nrow(data.info))
   {
