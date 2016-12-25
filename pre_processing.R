@@ -1,4 +1,4 @@
-DummyConstructor <- function(feature, na, name)
+DummyConstruction <- function(feature, na, name)
 {
   # Takes a feature and decompose each unique element into a dummy
   # 
@@ -14,20 +14,17 @@ DummyConstructor <- function(feature, na, name)
   nd <- length(elements) - 1
   
   output.matrix <- matrix(data = 0 , 
-                         nrow = length(feature), 
-                         ncol = nd)
+                          nrow = length(feature), 
+                          ncol = nd)
   names <- c()
   if (na == FALSE)
   {
     for (i in 1:nd)
     {
       output.matrix[,i] <- as.integer( feature == elements[i] )
-      names[i] <- paste(name, 
-                       "_", 
-                       gsub(' ', 
-                            '_',
-                            as.character(elements[i])),
-                       sep = "")
+      names[i] <- paste(name, "_", 
+                        gsub(' ', '_', as.character(elements[i])),
+                        sep = "")
     }      
   }
   else
@@ -42,12 +39,9 @@ DummyConstructor <- function(feature, na, name)
       if (!is.na(elements[i]))
       {
         output.matrix[ ,output.index] <- as.integer( feature == elements[i] )
-        names[output.index] <- paste(name, 
-                                    "_", 
-                                    gsub(' ', 
-                                         '_', 
-                                         as.character(elements[i])), 
-                                    sep = "") 
+        names[output.index] <- paste(name,"_", 
+                                     gsub(' ', '_', as.character(elements[i])), 
+                                     sep = "") 
         output.index <- output.index + 1
       }
     }
@@ -82,6 +76,47 @@ NASpecialLevel <- function(feature, name)
   return (NA)
 }
 
+LevelConstruction <- function(all.features, level.indexes, data.info)
+{
+  # Groups all the level features in one data.frame
+  # By grouping features in the beginning of the data.frame it's easier to generate cross products
+  #
+  # Args:
+  #   all.features: All features avaiable
+  #   level.indexes: One dimensional object with indexes of all level features
+  #   data.info: Information about the features (generate level or dummy)
+  #
+  # Return:
+  #   level.data: All level data corrected 
+  #
+  nd <- length(level.indexes)
+  level.data <- NA
+  level.names <- c()
+  for (i in 1:nd)
+  {
+    index <- level.indexes[i]
+    if (data.info[index,3] == TRUE) # It has NA elements
+    {
+      addData <- NASpecialLevel(all.features[ ,index], data.info[index,1])
+    }
+    else
+    {
+      addData <- all.features[ ,index]
+    }
+    
+    if (!anyNA(addData))
+    {
+      level.names <- append(level.names, paste(data.info[index,1]))
+      if (anyNA(level.data))
+        level.data <- as.data.frame(addData)  
+      else
+        level.data <- cbind2(level.data, as.data.frame(addData))
+    } 
+  }
+  colnames(level.data) <- level.names
+  return (level.data)
+}
+
 InputConstruction <- function(all.features, data.info)
 {
   # Generates the estimation data according with the information provided
@@ -94,32 +129,22 @@ InputConstruction <- function(all.features, data.info)
   #   x.matrix: X matrix ready for estimation
   #
   x.matrix <- data.frame()
+  level.indexes <- c()
   for ( i in 1:nrow(data.info))
   {
     if (data.info[i,4] == "Dummy")
-      feature.data <- DummyConstructor(all.features[ ,i], data.info[i,3], data.info[i,1])
-    else
     {
-      if (data.info[i,3] == FALSE)
-        feature.data <- as.data.frame(all.features[ ,i])
-      else
-      {
-        feature.data <- as.data.frame( NASpecialLevel(all.features[ ,i], 
-                                                     data.info[i,1]) )
-      }
-      colnames(feature.data) <- gsub(' ', 
-                                     '_', 
-                                     colnames(all.features)[i] )
-    }
-    
-    if (!anyNA(feature.data))
-    {
+      feature.data <- DummyConstruction(all.features[ ,i], data.info[i,3], data.info[i,1])
       if (i == 1)
         x.matrix <- feature.data
       else
         x.matrix <- cbind2(x.matrix, feature.data)
     }
+    else if (data.info[i,4] == "Level")
+      level.indexes <- append(level.indexes, i)
   }
+  level.data <- LevelConstruction(all.features, level.indexes, data.info)
+  x.matrix <- cbind2(level.data, x.matrix)
   return (x.matrix)
 }
 

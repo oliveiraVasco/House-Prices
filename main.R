@@ -5,8 +5,8 @@ source("random_sample.R")
 
 # File reading ------------------------
 data <- read.csv("data/train.csv",
-                header = TRUE,
-                sep = ",")
+                 header = TRUE,
+                 sep = ",")
 
 data.info <- read.csv("feature_approach.csv", 
                       header = TRUE, 
@@ -27,8 +27,8 @@ FeaturePloting(all.features, house.price)
 # Feature Processing --------------------
 
 data.regression <- RegressionMatrix(all.features,
-                                   house.price, 
-                                   data.info)
+                                    house.price, 
+                                    data.info)
 
 # Least Squares Estimation ---------------
 
