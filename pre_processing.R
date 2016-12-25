@@ -9,6 +9,7 @@ DummyConstructor <- function(feature, na, name)
   #
   # Return:
   #   output.matrix: Object with each unique element on each column
+  #
   elements <- unique(feature)
   nd <- length(elements) - 1
   
@@ -35,6 +36,7 @@ DummyConstructor <- function(feature, na, name)
     feature <- as.matrix(feature)
     feature[is.na(feature)] <- FALSE
     feature <- as.array(feature)
+    nd <- nd + 1
     for (i in 1:nd)
     {
       if (!is.na(elements[i]))
@@ -48,16 +50,6 @@ DummyConstructor <- function(feature, na, name)
                                     sep = "") 
         output.index <- output.index + 1
       }
-    }
-    if (!is.na(elements[nd+1]))
-    {
-      output.matrix[ ,output.index] <- as.integer( feature == elements[nd+1] )
-      names[output.index] <- paste(name,
-                                  "_",
-                                  gsub(' ', 
-                                       '_', 
-                                       as.character(elements[nd+1])), 
-                                  sep = "") 
     }
   }
   
