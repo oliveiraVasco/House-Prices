@@ -1,6 +1,7 @@
 source("pre_analysis.R")
 source("pre_processing.R")
 source("regression.R")
+source("random_sample.R")
 
 # File reading ------------------------
 data <- read.csv("data/train.csv",
