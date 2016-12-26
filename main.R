@@ -30,7 +30,10 @@ train.all.features <- train.data[ ,2:(ncol(train.data)-1)]
 
 #FeaturePloting(data[ ,2:(ncol(data)-1)], data[ ,ncol(data)])
 
+# Cleaning Global environment -----------
+
 rm (data)
+rm (train.data)
 
 # Feature Processing --------------------
 

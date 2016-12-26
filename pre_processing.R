@@ -1,4 +1,4 @@
-DummyConstruction <- function(feature, na, name)
+DummyConstruction <- function(feature, name)
 {
   # Takes a feature and decompose each unique element into a dummy
   # 
@@ -13,9 +13,13 @@ DummyConstruction <- function(feature, na, name)
   elements <- unique(feature)
   nd <- length(elements) - 1
   
+  if (nd == 0)
+    return (NA)
+  
   output.matrix <- matrix(data = 0 , 
                           nrow = length(feature), 
                           ncol = nd)
+  na <- anyNA(feature)
   names <- c()
   if (na == FALSE)
   {
@@ -63,6 +67,8 @@ MuteDummy <- function(name)
   #   TRUE: Dummy is on mute list
   #   FALSE: Dummy is not in mute
   #
+  
+  #mute <- c()
   mute <- c("BldgType", "Exterior2nd", "BsmtCond", "BsmtFinType1",
             "TotRmsAbvGrd", "FireplaceQu", "GarageFinish",
             "GarageCars", "GarageQual", "GarageCond", "MiscVal")
@@ -150,11 +156,14 @@ InputConstruction <- function(all.features, data.info)
   {
     if (data.info[i,4] == "Dummy" && MuteDummy(data.info[i,1]) == FALSE)
     {
-      feature.data <- DummyConstruction(all.features[ ,i], data.info[i,3], data.info[i,1])
-      if (i == 1)
-        x.matrix <- feature.data
-      else
-        x.matrix <- cbind2(x.matrix, feature.data)
+      feature.data <- DummyConstruction(all.features[ ,i], data.info[i,1])
+      if (!anyNA(feature.data))
+      {
+        if (i == 1)
+          x.matrix <- feature.data
+        else
+          x.matrix <- cbind2(x.matrix, feature.data)        
+      }
     }
     else if (data.info[i,4] == "Level")
       level.indexes <- append(level.indexes, i)
