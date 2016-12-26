@@ -52,6 +52,26 @@ DummyConstruction <- function(feature, na, name)
   return (output.matrix)
 }
 
+MuteDummy <- function(name)
+{
+  # Verifies if dummy's name is on mute list
+  #
+  # Args:
+  #   name: Dummy's name
+  #
+  # Return:
+  #   TRUE: Dummy is on mute list
+  #   FALSE: Dummy is not in mute
+  #
+  mute <- c("BldgType", "Exterior2nd", "BsmtCond", "BsmtFinType1",
+            "TotRmsAbvGrd", "FireplaceQu", "GarageFinish",
+            "GarageCars", "GarageQual", "GarageCond", "MiscVal")
+  if(name %in% mute)
+    return (TRUE)
+  else
+    return (FALSE)
+}
+
 NASpecialLevel <- function(feature, name)
 {
   # Corrects or mutes level feature with NA elements
@@ -64,16 +84,19 @@ NASpecialLevel <- function(feature, name)
   #   result: Corrected data
   #   NA: No correction available
   
-  if (name == "LotFrontage" || name == "MasVnrArea")
+  correction1 <- c("LotFrontage", "MasVnrArea")
+  mute <- c("GarageYrBlt", "BsmtUnfSF", "LowQualFinSF")
+  
+  if ( name %in% correction1 )
   {
-    result <- feature[is.na(feature)]<-0
-    return (result)
+    feature[is.na(feature)]<-0
+    return (feature)
   }
-  else if ( name == "GarageYrBlt")
+  else if ( name %in% mute)
   {
     return (NA)
   }
-  return (NA)
+  return (feature)
 }
 
 LevelConstruction <- function(all.features, level.indexes, data.info)
@@ -95,14 +118,7 @@ LevelConstruction <- function(all.features, level.indexes, data.info)
   for (i in 1:nd)
   {
     index <- level.indexes[i]
-    if (data.info[index,3] == TRUE) # It has NA elements
-    {
-      addData <- NASpecialLevel(all.features[ ,index], data.info[index,1])
-    }
-    else
-    {
-      addData <- all.features[ ,index]
-    }
+    addData <- NASpecialLevel(all.features[ ,index], data.info[index,1])
     
     if (!anyNA(addData))
     {
@@ -132,7 +148,7 @@ InputConstruction <- function(all.features, data.info)
   level.indexes <- c()
   for ( i in 1:nrow(data.info))
   {
-    if (data.info[i,4] == "Dummy")
+    if (data.info[i,4] == "Dummy" && MuteDummy(data.info[i,1]) == FALSE)
     {
       feature.data <- DummyConstruction(all.features[ ,i], data.info[i,3], data.info[i,1])
       if (i == 1)

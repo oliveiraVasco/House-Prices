@@ -22,7 +22,7 @@ rm (data)
 
 # Data Ploting --------------------------
 
-FeaturePloting(all.features, house.price)
+#FeaturePloting(all.features, house.price)
 
 # Feature Processing --------------------
 
@@ -33,3 +33,5 @@ data.regression <- RegressionMatrix(all.features,
 # Least Squares Estimation ---------------
 
 regression.result <- RegressionFunction(data.regression)
+
+
