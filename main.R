@@ -14,20 +14,28 @@ data.info <- read.csv("feature_approach.csv",
 
 # Data Segmentation --------------------
 
-house.price <- data[ ,ncol(data)]
+train.percentage <- 0.7
 
-all.features <- data[ ,2:(ncol(data)-1)]
+smp.indexes <- GenerateSample(nrow(data), train.percentage)
 
-rm (data)
+train.data <- SegmentTrainingSample(data, smp.indexes)
+
+cv.data <- SegmentCrossValidation(data, smp.indexes)
+
+train.house.price <- train.data[ ,ncol(train.data)]
+
+train.all.features <- train.data[ ,2:(ncol(train.data)-1)]
 
 # Data Ploting --------------------------
 
-#FeaturePloting(all.features, house.price)
+#FeaturePloting(data[ ,2:(ncol(data)-1)], data[ ,ncol(data)])
+
+rm (data)
 
 # Feature Processing --------------------
 
-data.regression <- RegressionMatrix(all.features,
-                                    house.price, 
+data.regression <- RegressionMatrix(train.all.features,
+                                    train.house.price, 
                                     data.info)
 
 # Least Squares Estimation ---------------
