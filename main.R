@@ -2,6 +2,7 @@ source("pre_analysis.R")
 source("pre_processing.R")
 source("regression.R")
 source("random_sample.R")
+source("multicolinearity.R")
 
 # File reading ------------------------
 data <- read.csv("data/train.csv",
@@ -14,7 +15,7 @@ data.info <- read.csv("feature_approach.csv",
 
 # Data Segmentation --------------------
 
-train.percentage <- 0.7
+train.percentage <- 1
 
 smp.indexes <- GenerateSample(nrow(data), train.percentage)
 
@@ -32,14 +33,17 @@ train.all.features <- train.data[ ,2:(ncol(train.data)-1)]
 
 # Cleaning Global environment -----------
 
-rm (data)
-rm (train.data)
+#rm (data)
+#rm (train.data)
 
 # Feature Processing --------------------
 
 data.regression <- RegressionMatrix(train.all.features,
                                     train.house.price, 
                                     data.info)
+
+# Multicolinearity ----------------------
+#vifs <- StepWiseMulticolinearity(data.regression)
 
 # Least Squares Estimation ---------------
 

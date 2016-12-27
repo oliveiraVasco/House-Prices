@@ -71,7 +71,7 @@ MuteDummy <- function(name)
   #mute <- c()
   mute <- c("BldgType", "Exterior2nd", "BsmtCond", "BsmtFinType1",
             "TotRmsAbvGrd", "FireplaceQu", "GarageFinish",
-            "GarageCars", "GarageQual", "GarageCond", "MiscVal")
+            "GarageCars", "GarageQual", "GarageCond", "MiscVal")  # Linear dependent with other variables
   if(name %in% mute)
     return (TRUE)
   else
@@ -91,7 +91,7 @@ NASpecialLevel <- function(feature, name)
   #   NA: No correction available
   
   correction1 <- c("LotFrontage", "MasVnrArea")
-  mute <- c("GarageYrBlt", "BsmtUnfSF", "LowQualFinSF")
+  mute <- c("GarageYrBlt", "BsmtUnfSF", "LowQualFinSF") # Last two are linear dependent with other variables
   
   if ( name %in% correction1 )
   {
