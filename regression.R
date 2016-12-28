@@ -1,4 +1,4 @@
-RegressionFunction <- function(regression.data)
+RegressionFunction <- function(data.regression)
 {
   # Generation of formula and estimation of least square 
   #
@@ -8,18 +8,18 @@ RegressionFunction <- function(regression.data)
   # Returns:
   #   regression.result: Least squares object
   
-  feature.names <- colnames(regression.data)
-  regression.formula <- paste(feature.names[1], 
-                             " ~ ", 
-                             feature.names[2]) 
-  for (i in 3:length(feature.names))
-  {
-    regression.formula <- paste(regression.formula, 
-                               " + ", 
-                               feature.names[i])
-  }
+  feature.names <- colnames(data.regression)
+  
+  regression.formula <- paste(feature.names[2:length(feature.names)],
+                              collapse = " + ")
+  
+  regression.formula <- paste(feature.names[1], " ~ ",
+                              regression.formula, sep = "")
+  
   regression.formula <- as.formula(regression.formula)
+  
   regression.result <- lm(regression.formula, 
-                         data = regression.data)
+                          data = data.regression)
+  
   return (regression.result)
 }
