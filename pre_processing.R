@@ -105,6 +105,31 @@ NASpecialLevel <- function(feature, name)
   return (feature)
 }
 
+LevelSquares <- function(level.data, level.names)
+{
+  # Computes the cross prodcut between all level features
+  #
+  # Args:
+  #   level.data: Two dimensional object with features on columns
+  #   level.names: One dimensional obeject with all level features names
+  #
+  # Returns:
+  #   level.data: Two dimensional obeject with level features and cros product ( and colnames)
+  #
+  
+  nd <- ncol(level.data)
+  for (i in 1:nd)
+  {
+    for (j in i:nd)
+    {
+      level.data <- cbind2(level.data, as.numeric(level.data[ ,i]) * as.numeric(level.data[ ,j]))
+      level.names <- append(level.names, paste(level.names[i], "_X_", level.names[j], sep=""))
+    }
+  }
+  colnames(level.data) <- level.names
+  return (level.data)
+}
+
 LevelConstruction <- function(all.features, level.indexes, data.info)
 {
   # Groups all the level features in one data.frame
@@ -135,7 +160,9 @@ LevelConstruction <- function(all.features, level.indexes, data.info)
         level.data <- cbind2(level.data, as.data.frame(addData))
     } 
   }
-  colnames(level.data) <- level.names
+  #colnames(level.data) <- level.names
+  level.data <- LevelSquares(level.data, level.names)
+  print(paste("Number of level:", ncol(level.data)))
   return (level.data)
 }
 
