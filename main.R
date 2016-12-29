@@ -1,8 +1,9 @@
 source("pre_analysis.R")
 source("pre_processing.R")
-source("regression.R")
-source("random_sample.R")
+source("regression_tools.R")
 source("multicolinearity.R")
+source("step_wise.R")
+
 
 # File reading ------------------------
 data <- read.csv("data/train.csv",
@@ -15,17 +16,9 @@ data.info <- read.csv("feature_approach.csv",
 
 # Data Segmentation --------------------
 
-train.percentage <- 1
+all.features <- data[ ,2:(ncol(data)-1)]
 
-smp.indexes <- GenerateSample(nrow(data), train.percentage)
-
-train.data <- SegmentTrainingSample(data, smp.indexes)
-
-cv.data <- SegmentCrossValidation(data, smp.indexes)
-
-train.house.price <- train.data[ ,ncol(train.data)]
-
-train.all.features <- train.data[ ,2:(ncol(train.data)-1)]
+house.price <- data[ ,ncol(data)]
 
 # Data Ploting --------------------------
 
@@ -38,15 +31,21 @@ train.all.features <- train.data[ ,2:(ncol(train.data)-1)]
 
 # Feature Processing --------------------
 
-data.regression <- RegressionMatrix(train.all.features,
-                                    train.house.price, 
+data.regression <- RegressionMatrix(all.features,
+                                    house.price, 
                                     data.info)
+
+# Linear Dependece ----------------------
+
+data.regression <- LinearDependence(data.regression, FALSE)
 
 # Multicolinearity ----------------------
 #vifs <- StepWiseMulticolinearity(data.regression)
 
 # Least Squares Estimation ---------------
 
-regression.result <- RegressionFunction(data.regression)
+#regression.result <- RegressionEstimationType(data.regression)
+
+best.formula <- CrossValidationStepWise(data.regression, 2, 0.7)
 
 
