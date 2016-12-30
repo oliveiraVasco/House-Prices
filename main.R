@@ -37,7 +37,7 @@ data.regression <- RegressionMatrix(all.features,
 
 # Linear Dependece ----------------------
 
-#data.regression <- LinearDependence(data.regression, FALSE)
+data.regression <- LinearDependence(data.regression, FALSE)
 
 # Multicolinearity ----------------------
 #vifs <- StepWiseMulticolinearity(data.regression)
@@ -46,6 +46,6 @@ data.regression <- RegressionMatrix(all.features,
 
 #regression.result <- RegressionEstimationType(data.regression)
 
-best.formula <- CrossValidationStepWise(data.regression, 5, 0.7)
+best.formula <- CrossValidationStepWise(data.regression, 2, 0.7)
 
 

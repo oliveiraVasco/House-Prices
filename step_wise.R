@@ -15,7 +15,6 @@ Rmsle <- function(y , y.estimated)
   #
   
   rmsle <- sqrt( (1/length(y)) * sum((log(y + 1) - log(y.estimated + 1))^2) )
-
   return (rmsle)
 }
 
@@ -48,8 +47,8 @@ FeatureAnalysis <- function(train.data, cross.validation.data)
     }
 
     # Regression Predictions and RMSLE
-    regression <- RegressionFunction (temp.train.data, FALSE)
-    predictions <- predict(regression, temp.cv[ ,-1])
+    regression <- RegressionEstimationType (temp.train.data)
+    predictions <- Prediction (regression$coefficients, temp.cv)
     indicator <- Rmsle(temp.cv[ ,1], predictions)
     feature.rmsle <- append(feature.rmsle, indicator)
   }
@@ -84,6 +83,7 @@ CrossValidationStepWise <- function(data.regression, n.sample.generations, train
       cross.validation.data <- SegmentCrossValidation(data.regression, smp.indexes)
       
       feature.rmsle <- FeatureAnalysis(train.data, cross.validation.data)
+      feature.index <- which.min(feature.rmsle) + 1
       
       temp.error <- temp.error + feature.rmsle
     }
