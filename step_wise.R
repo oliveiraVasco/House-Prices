@@ -1,6 +1,6 @@
 source("random_sample.R")
 source("regression_tools.R")
-
+require(doMC)
 
 Rmsle <- function(y , y.estimated)
 {
@@ -31,10 +31,12 @@ FeatureAnalysis <- function(train.data, cross.validation.data)
   #   feature.rmsle: One dimensional object with the rmsle for the feature removed
   #
   
-  feature.rmsle <- c()
-  for (i in 2:ncol(train.data))
+  number.features <- ncol(train.data) - 1 
+  feature.rmsle <- array(data = 0, dim = number.features)
+  #for (i in 2:(number.features+1))
+  feature.rmsle <- foreach (i = 2:(number.features+1), .combine = c) %dopar%
   {
-    #print(paste("    Cross Validation", i))
+    print(paste("    Cross Validation", i))
     # Removing i feature
     temp.train.data <- train.data[ ,-i]
     temp.cv <- cross.validation.data[ ,-i]
@@ -43,12 +45,12 @@ FeatureAnalysis <- function(train.data, cross.validation.data)
     regression <- RegressionFunction (temp.train.data, FALSE)
     predictions <- Prediction(regression$coefficients, temp.cv[ ,-1])
     indicator <- Rmsle(exp(temp.cv[ ,1]), exp(predictions))
-    feature.rmsle <- append(feature.rmsle, indicator)
+    feature.rmsle[i-1] <- indicator
   }
   return (feature.rmsle)
 }
 
-CrossValidationStepWise <- function(data.regression, n.sample.generations, train.percentage)
+CrossValidationStepWise <- function(data.regression, n.sample.generations, train.percentage, number.cores)
 {
   # Step wise backwards. Tests which feature is the best to remove based on FeatureAnalysis.
   #
@@ -60,6 +62,8 @@ CrossValidationStepWise <- function(data.regression, n.sample.generations, train
   # Returns:
   #   model.information: Returns the formula of the best model
   #
+  
+  registerDoMC(cores = number.cores)
   
   number.features <- ncol(data.regression) - 1
   vr <- number.features
