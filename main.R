@@ -18,11 +18,11 @@ data.info <- read.csv("feature_approach.csv",
 
 all.features <- data[ ,2:(ncol(data)-1)]
 
-house.price <- data[ ,ncol(data)]
+house.price <- log(data[ ,ncol(data)])
 
 # Data Ploting --------------------------
 
-#FeaturePloting(data[ ,2:(ncol(data)-1)], data[ ,ncol(data)])
+#FeaturePloting(all.features, house.price)
 
 # Cleaning Global environment -----------
 
