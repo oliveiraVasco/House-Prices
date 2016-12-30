@@ -82,21 +82,3 @@ RegressionEstimationType <- function(data.regression)
   return (regression.result)
 }
 
-Prediction <- function(coeffs, cv.features)
-{
-  # Computes model predictions
-  #
-  # Args:
-  #   coeffs: One dimensional object with all model coefficients
-  #   cv.features: Two dimensional object with features on columns
-  #
-  # Returns:
-  #   predictions: One dimensional object with predicted values
-  #
-  
-  coeffs <- as.matrix(coeffs)
-  cv.features <- as.matrix(cv.features)
-  predictions <- cv.features %*% coeffs
-  return (predictions)
-}
-
