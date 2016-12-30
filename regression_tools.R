@@ -82,3 +82,20 @@ RegressionEstimationType <- function(data.regression)
   return (regression.result)
 }
 
+Prediction <- function(coeffs, cv.features)
+{
+  # Computes model predictions. Ignores linear dependent features and adds a columen to compute intercept.
+  #
+  # Args:
+  #   coeffs: One dimensional object with all model coefficients
+  #   cv.features: Two dimensional object with features on columns (without y)
+  #
+  # Returns:
+  #   predictions: One dimensional object with predicted values
+  #
+  coeffs[is.na(coeffs)]<-0 # Ignore linear dependence
+  cv.features <- cbind2(rep(1, nrow(cv.features)), cv.features)
+  pred <- as.matrix(cv.features) %*% coeffs
+  return (pred)
+}
+

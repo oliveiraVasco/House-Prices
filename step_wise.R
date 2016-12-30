@@ -34,23 +34,15 @@ FeatureAnalysis <- function(train.data, cross.validation.data)
   feature.rmsle <- c()
   for (i in 2:ncol(train.data))
   {
-    print(paste("    Cross Validation", i))
+    #print(paste("    Cross Validation", i))
     # Removing i feature
     temp.train.data <- train.data[ ,-i]
     temp.cv <- cross.validation.data[ ,-i]
-    
-    # Removing linear dependent features
-    remove.indexes <- LinearDependence(temp.train.data, TRUE)
-    if (length(remove.indexes) > 0)
-    {
-      temp.train.data <- temp.train.data[ ,-remove.indexes]
-      temp.cv <- temp.cv[ ,-remove.indexes]
-    }
 
     # Regression Predictions and RMSLE
     regression <- RegressionFunction (temp.train.data, FALSE)
-    predictions <- predict(regression, temp.cv[ ,-1])
-    indicator <- Rmsle(temp.cv[ ,1], predictions)
+    predictions <- Prediction(regression$coefficients, temp.cv[ ,-1])
+    indicator <- Rmsle(exp(temp.cv[ ,1]), exp(predictions))
     feature.rmsle <- append(feature.rmsle, indicator)
   }
   return (feature.rmsle)
