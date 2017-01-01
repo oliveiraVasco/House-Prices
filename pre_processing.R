@@ -56,28 +56,6 @@ DummyConstruction <- function(feature, name)
   return (output.matrix)
 }
 
-MuteDummy <- function(name)
-{
-  # Verifies if dummy's name is on mute list
-  #
-  # Args:
-  #   name: Dummy's name
-  #
-  # Return:
-  #   TRUE: Dummy is on mute list
-  #   FALSE: Dummy is not in mute
-  #
-  
-  #mute <- c()
-  mute <- c("BldgType", "Exterior2nd", "BsmtCond", "BsmtFinType1",
-            "TotRmsAbvGrd", "FireplaceQu", "GarageFinish",
-            "GarageCars", "GarageQual", "GarageCond", "MiscVal")  # Linear dependent with other variables
-  if(name %in% mute)
-    return (TRUE)
-  else
-    return (FALSE)
-}
-
 NASpecialLevel <- function(feature, name)
 {
   # Corrects or mutes level feature with NA elements
@@ -91,16 +69,16 @@ NASpecialLevel <- function(feature, name)
   #   NA: No correction available
   
   correction1 <- c("LotFrontage", "MasVnrArea")
-  mute <- c("GarageYrBlt", "BsmtUnfSF", "LowQualFinSF") # Last two are linear dependent with other variables
+  mute <- c("GarageYrBlt")
   
-  if ( name %in% correction1 )
+  if ( name %in% mute)
+  {
+    return (NA)
+  }
+  else if ( name %in% correction1 || anyNA(feature) )
   {
     feature[is.na(feature)]<-0
     return (feature)
-  }
-  else if ( name %in% mute)
-  {
-    return (NA)
   }
   return (feature)
 }
@@ -122,8 +100,10 @@ LevelSquares <- function(level.data, level.names)
   {
     for (j in i:nd)
     {
-      level.data <- cbind2(level.data, as.numeric(level.data[ ,i]) * as.numeric(level.data[ ,j]))
-      level.names <- append(level.names, paste(level.names[i], "_X_", level.names[j], sep=""))
+      level.data <- cbind2(level.data, 
+                           as.numeric(level.data[ ,i]) * as.numeric(level.data[ ,j]))
+      level.names <- append(level.names, 
+                            paste(level.names[i], "_X_", level.names[j], sep=""))
     }
   }
   colnames(level.data) <- level.names
@@ -143,24 +123,28 @@ LevelConstruction <- function(all.features, level.indexes, data.info)
   # Return:
   #   level.data: All level data corrected 
   #
+  
   nd <- length(level.indexes)
   level.data <- NA
   level.names <- c()
   for (i in 1:nd)
   {
     index <- level.indexes[i]
-    addData <- NASpecialLevel(all.features[ ,index], data.info[index,1])
+    addData <- NASpecialLevel(all.features[ ,index],
+                              data.info[index,1])
     
     if (!anyNA(addData))
     {
-      level.names <- append(level.names, paste(data.info[index,1]))
+      level.names <- append(level.names,
+                            paste(data.info[index,1]))
       if (anyNA(level.data))
         level.data <- as.data.frame(addData)  
       else
-        level.data <- cbind2(level.data, as.data.frame(addData))
+        level.data <- cbind2(level.data,
+                             as.data.frame(addData))
     } 
   }
-  #colnames(level.data) <- level.names
+  #colnames(level.data) <- level.names # Uncomment when LevelSquares is not invoked
   level.data <- LevelSquares(level.data, level.names)
   print(paste("Number of level:", ncol(level.data)))
   return (level.data)
@@ -181,9 +165,10 @@ InputConstruction <- function(all.features, data.info)
   level.indexes <- c()
   for ( i in 1:nrow(data.info))
   {
-    if (data.info[i,4] == "Dummy" && MuteDummy(data.info[i,1]) == FALSE)
+    if (data.info[i,2] == "Dummy")
     {
-      feature.data <- DummyConstruction(all.features[ ,i], data.info[i,1])
+      feature.data <- DummyConstruction(all.features[ ,i],
+                                        data.info[i,1])
       if (!anyNA(feature.data))
       {
         if (i == 1)
@@ -192,30 +177,31 @@ InputConstruction <- function(all.features, data.info)
           x.matrix <- cbind2(x.matrix, feature.data)        
       }
     }
-    else if (data.info[i,4] == "Level")
+    else if (data.info[i,2] == "Level")
       level.indexes <- append(level.indexes, i)
   }
-  level.data <- LevelConstruction(all.features, level.indexes, data.info)
+  print(paste("Number of Dummy:", ncol(x.matrix)))
+  level.data <- LevelConstruction(all.features,
+                                  level.indexes, data.info)
   x.matrix <- cbind2(level.data, x.matrix)
+  print(paste("Total variables:", ncol(x.matrix)))
   return (x.matrix)
 }
 
-
-RegressionMatrix <- function(all.features, house.price, data.info)
+AppendYToRegressionMatrix <- function(regression.data, y)
 {
-  # Generates the data ready for least square function
+  # Appends Y values to the X matrix
   #
   # Args:
-  #   all.feature: Object with features on its columns
-  #   house.price: One dimension object with house price
-  #   data.info: Information collected from feature_approach.csv file
+  #   regression.data: All regressible features ( on columns)
+  #   y: One dimensional object with y values
   #
-  # Return:
-  #   regression.data: Object ready for regression. Y on the first column and level and dummy features on the others.
+  # Returns:
+  #   regression.data: Y on the first column and features on the others
   #
-  x.matrix <- InputConstruction(all.features, data.info)
-  house.price <- as.data.frame(house.price)
-  colnames(house.price) <- "house.price"
-  regression.data <- cbind2(house.price, x.matrix)
+  
+  y <- as.data.frame(y)
+  colnames(y) <- "housePrice"
+  regression.data <- cbind2(y, regression.data) 
   return (regression.data)
 }

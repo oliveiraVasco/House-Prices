@@ -14,11 +14,17 @@ data.info <- read.csv("feature_approach.csv",
                       header = TRUE, 
                       sep = ",")
 
+data.test <- read.csv("data/test.csv",
+                      header = TRUE,
+                      sep = ",")
+
 # Data Segmentation --------------------
 
 all.features <- data[ ,2:(ncol(data)-1)]
 
 house.price <- log(data[ ,ncol(data)])
+
+data.test <- data.test[ ,-1]
 
 # Data Ploting --------------------------
 
@@ -31,9 +37,16 @@ house.price <- log(data[ ,ncol(data)])
 
 # Feature Processing --------------------
 
-data.regression <- RegressionMatrix(all.features,
-                                    house.price, 
-                                    data.info)
+
+data.regression <- InputConstruction(rbind(all.features, data.test),
+                                     data.info)
+
+test.regression <- data.regression[(nrow(all.features) + 1):nrow(data.regression), ]
+
+data.regression <- data.regression[1:nrow(all.features), ]
+
+data.regression <- AppendYToRegressionMatrix(data.regression, 
+                                             house.price)
 
 # Linear Dependece ----------------------
 

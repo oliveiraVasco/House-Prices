@@ -1,80 +1,80 @@
-Feature,NTypes,NA?,Kind,Description
-MSSubClass,15,FALSE,Dummy,The building class
-MSZoning,5,FALSE,Dummy,The general zoning classification
-LotFrontage,111,TRUE,Level,Linear feet of street connected to property
-LotArea,1073,FALSE,Level,Lot size in square feet
-Street,2,FALSE,Dummy,Type of road access
-Alley,3,TRUE,Dummy,Type of alley access
-LotShape,4,FALSE,Dummy,General shape of property
-LandContour,4,FALSE,Dummy,Flatness of the property
-Utilities,2,FALSE,Dummy,Type of utilities available
-LotConfig,5,FALSE,Dummy,Lot configuration
-LandSlope,3,FALSE,Dummy,Slope of property
-Neighborhood,25,FALSE,Dummy,Physical locations within Ames city limits
-Condition1,9,FALSE,Dummy,Proximity to main road or railroad
-Condition2,8,FALSE,Dummy,Proximity to main road or railroad (if a second is present)
-BldgType,5,FALSE,Dummy,Type of dwelling
-HouseStyle,8,FALSE,Dummy,Style of dwelling
-OverallQual,10,FALSE,Dummy,Overall material and finish quality
-OverallCond,9,FALSE,Dummy,Overall condition rating
-YearBuilt,112,FALSE,Level,Original construction date
-YearRemodAdd,61,FALSE,Level,Remodel date
-RoofStyle,6,FALSE,Dummy,Type of roof
-RoofMatl,8,FALSE,Dummy,Roof material
-Exterior1st,15,FALSE,Dummy,Exterior covering on house
-Exterior2nd,16,FALSE,Dummy,Exterior covering on house (if more than one material)
-MasVnrType,5,TRUE,Dummy,Masonry veneer type
-MasVnrArea,328,TRUE,Level,Masonry veneer area in square feet
-ExterQual,4,FALSE,Dummy,Exterior material quality
-ExterCond,5,FALSE,Dummy,Present condition of the material on the exterior
-Foundation,6,FALSE,Dummy,Type of foundation
-BsmtQual,5,TRUE,Dummy,Height of the basement
-BsmtCond,5,TRUE,Dummy,General condition of the basement
-BsmtExposure,5,TRUE,Dummy,Walkout or garden level basement walls
-BsmtFinType1,7,TRUE,Dummy,Quality of basement finished area
-BsmtFinSF1,637,FALSE,Level,Type 1 finished square feet
-BsmtFinType2,7,TRUE,Dummy,Quality of second finished area (if present)
-BsmtFinSF2,144,FALSE,Level,Type 2 finished square feet
-BsmtUnfSF,780,FALSE,Level,Unfinished square feet of basement area
-TotalBsmtSF,721,FALSE,Level,Total square feet of basement area
-Heating,6,FALSE,Dummy,Type of heating
-HeatingQC,5,FALSE,Dummy,Heating quality and condition
-CentralAir,2,FALSE,Dummy,Central air conditioning
-Electrical,6,TRUE,Dummy,Electrical system
-X1stFlrSF,753,FALSE,Level,First Floor square feet
-X2ndFlrSF,417,FALSE,Level,Second floor square feet
-LowQualFinSF,24,FALSE,Level,Low quality finished square feet (all floors)
-GrLivArea,861,FALSE,Level,Above grade (ground) living area square feet
-BsmtFullBath,4,FALSE,Dummy,Basement full bathrooms
-BsmtHalfBath,3,FALSE,Dummy,Basement half bathrooms
-FullBath,4,FALSE,Dummy,Full bathrooms above grade
-HalfBath,3,FALSE,Dummy,Half baths above grade
-BedroomAbvGr,8,FALSE,Dummy,Number of bedrooms above basement level
-KitchenAbvGr,4,FALSE,Dummy,Number of kitchens
-KitchenQual,4,FALSE,Dummy,Kitchen quality
-TotRmsAbvGrd,12,FALSE,Dummy,Total rooms above grade (does not include bathrooms)
-Functional,7,FALSE,Dummy,Home functionality rating
-Fireplaces,4,FALSE,Dummy,Number of fireplaces
-FireplaceQu,6,TRUE,Dummy,Fireplace quality
-GarageType,7,TRUE,Dummy,Garage location
-GarageYrBlt,98,TRUE,Level,Year garage was built
-GarageFinish,4,TRUE,Dummy,Interior finish of the garage
-GarageCars,5,FALSE,Dummy,Size of garage in car capacity
-GarageArea,441,FALSE,Level,Size of garage in square feet
-GarageQual,6,TRUE,Dummy,Garage quality
-GarageCond,6,TRUE,Dummy,Garage condition
-PavedDrive,3,FALSE,Dummy,Paved driveway
-WoodDeckSF,274,FALSE,Level,Wood deck area in square feet
-OpenPorchSF,202,FALSE,Level,Open porch area in square feet
-EnclosedPorch,120,FALSE,Level,Enclosed porch area in square feet
-X3SsnPorch,20,FALSE,Level,Three season porch area in square feet
-ScreenPorch,76,FALSE,Level,Screen porch area in square feet
-PoolArea,8,FALSE,Level,Pool area in square feet
-PoolQC,4,TRUE,Dummy,Pool quality
-Fence,5,TRUE,Dummy,Fence quality
-MiscFeature,5,TRUE,Dummy,Miscellaneous feature not covered in other categories
-MiscVal,21,FALSE,Dummy,$Value of miscellaneous feature
-MoSold,12,FALSE,Dummy,Month Sold
-YrSold,5,FALSE,Dummy,Year Sold
-SaleType,9,FALSE,Dummy,Type of sale
-SaleCondition,6,FALSE,Dummy,Condition of sale
+Feature,Kind
+MSSubClass,Dummy
+MSZoning,Dummy
+LotFrontage,Level
+LotArea,Level
+Street,Dummy
+Alley,Dummy
+LotShape,Dummy
+LandContour,Dummy
+Utilities,Dummy
+LotConfig,Dummy
+LandSlope,Dummy
+Neighborhood,Dummy
+Condition1,Dummy
+Condition2,Dummy
+BldgType,Dummy
+HouseStyle,Dummy
+OverallQual,Dummy
+OverallCond,Dummy
+YearBuilt,Level
+YearRemodAdd,Level
+RoofStyle,Dummy
+RoofMatl,Dummy
+Exterior1st,Dummy
+Exterior2nd,Dummy
+MasVnrType,Dummy
+MasVnrArea,Level
+ExterQual,Dummy
+ExterCond,Dummy
+Foundation,Dummy
+BsmtQual,Dummy
+BsmtCond,Dummy
+BsmtExposure,Dummy
+BsmtFinType1,Dummy
+BsmtFinSF1,Level
+BsmtFinType2,Dummy
+BsmtFinSF2,Level
+BsmtUnfSF,Level
+TotalBsmtSF,Level
+Heating,Dummy
+HeatingQC,Dummy
+CentralAir,Dummy
+Electrical,Dummy
+X1stFlrSF,Level
+X2ndFlrSF,Level
+LowQualFinSF,Level
+GrLivArea,Level
+BsmtFullBath,Dummy
+BsmtHalfBath,Dummy
+FullBath,Dummy
+HalfBath,Dummy
+BedroomAbvGr,Dummy
+KitchenAbvGr,Dummy
+KitchenQual,Dummy
+TotRmsAbvGrd,Dummy
+Functional,Dummy
+Fireplaces,Dummy
+FireplaceQu,Dummy
+GarageType,Dummy
+GarageYrBlt,Level
+GarageFinish,Dummy
+GarageCars,Dummy
+GarageArea,Level
+GarageQual,Dummy
+GarageCond,Dummy
+PavedDrive,Dummy
+WoodDeckSF,Level
+OpenPorchSF,Level
+EnclosedPorch,Level
+X3SsnPorch,Level
+ScreenPorch,Level
+PoolArea,Level
+PoolQC,Dummy
+Fence,Dummy
+MiscFeature,Dummy
+MiscVal,Dummy
+MoSold,Dummy
+YrSold,Dummy
+SaleType,Dummy
+SaleCondition,Dummy
