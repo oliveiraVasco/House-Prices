@@ -59,6 +59,8 @@ data.regression <- AppendYToRegressionMatrix(data.regression,
 
 #regression.result <- RegressionEstimationType(data.regression)
 
-best.formula <- CrossValidationStepWise(data.regression, 2, 0.7, 3)
+# Step Wise ------------------------------
+
+best.formula <- CrossValidationStepWiseForward(data.regression, 5, 0.7, 2, 5)
 
 

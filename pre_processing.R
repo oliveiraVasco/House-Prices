@@ -146,7 +146,7 @@ LevelConstruction <- function(all.features, level.indexes, data.info)
   }
   #colnames(level.data) <- level.names # Uncomment when LevelSquares is not invoked
   level.data <- LevelSquares(level.data, level.names)
-  print(paste("Number of level:", ncol(level.data)))
+  #print(paste("Number of level:", ncol(level.data)))
   return (level.data)
 }
 
@@ -180,11 +180,11 @@ InputConstruction <- function(all.features, data.info)
     else if (data.info[i,2] == "Level")
       level.indexes <- append(level.indexes, i)
   }
-  print(paste("Number of Dummy:", ncol(x.matrix)))
+  #print(paste("Number of Dummy:", ncol(x.matrix)))
   level.data <- LevelConstruction(all.features,
                                   level.indexes, data.info)
   x.matrix <- cbind2(level.data, x.matrix)
-  print(paste("Total variables:", ncol(x.matrix)))
+  #print(paste("Total variables:", ncol(x.matrix)))
   return (x.matrix)
 }
 

@@ -93,7 +93,8 @@ Prediction <- function(coeffs, cv.features)
   # Returns:
   #   predictions: One dimensional object with predicted values
   #
-  coeffs[is.na(coeffs)]<-0 # Ignore linear dependence
+  cv.features <- as.matrix(cv.features)
+  coeffs[is.na(coeffs)] <- 0 # Ignore linear dependence
   cv.features <- cbind2(rep(1, nrow(cv.features)), cv.features)
   pred <- as.matrix(cv.features) %*% coeffs
   return (pred)
