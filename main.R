@@ -65,15 +65,17 @@ model.information <- CrossValidationStepWiseForward(data.regression, 5, 0.7, 2, 
 
 # Final Model Estimation
 
-model.info <- read.csv("data/formulas.csv")
+model.info <- read.csv("data/formulas.csv", header = TRUE)[-1]
 
 
-index.best.formula <- which.min(model.info[ ,3])
-best.formula <- as.formula(paste("housePrice ~ ",
-                                 model.info[index.best.formula,2],
-                                 sep =""))
+index.best.formula <- which.min(model.info[ ,2])
 
-best.regression <- lm(best.formula, data = data.regression)
+best.features <- model.info[1:index.best.formula,3]
 
-best.indexes <- model.info[1:index.best.formula, 4] - 1
+temp.input.regression <- data.regression[ ,append(1, best.features)]
 
+best.regression <- RegressionFunction(temp.input.regression, FALSE)
+
+test.input.prediction <- test.regression[ ,(best.features-1)]
+
+forecast <- exp(Prediction(best.regression$coefficients, test.input.prediction))
