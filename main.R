@@ -1,7 +1,7 @@
 source("pre_analysis.R")
 source("pre_processing.R")
 source("regression_tools.R")
-source("multicolinearity.R")
+source("multicollinearity.R")
 source("step_wise.R")
 
 
