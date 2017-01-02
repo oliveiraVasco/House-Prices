@@ -110,7 +110,7 @@ CrossValidationStepWiseForward <- function(data.regression, n.sample.generations
     model.feature <- append(model.feature, add.feature)
     
     temp.names <- colnames(data.regression)[model.feature]
-    model.information[vr, 1] <- paste(temp.names[2:length(temp.names)], collapse = " + ")
+    model.information[vr, 1] <- paste(temp.names, collapse = " + ")
     model.information[vr, 2] <- min(temp.error, na.rm = TRUE)
     model.information[vr, 3] <- add.feature
     

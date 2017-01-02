@@ -61,6 +61,19 @@ data.regression <- AppendYToRegressionMatrix(data.regression,
 
 # Step Wise ------------------------------
 
-model.information <- CrossValidationStepWiseForward(data.regression, 2, 0.7, 2, 5, NA)
+model.information <- CrossValidationStepWiseForward(data.regression, 5, 0.7, 2, 5, NA)
 
+# Final Model Estimation
+
+model.info <- read.csv("data/formulas.csv")
+
+
+index.best.formula <- which.min(model.info[ ,3])
+best.formula <- as.formula(paste("housePrice ~ ",
+                                 model.info[index.best.formula,2],
+                                 sep =""))
+
+best.regression <- lm(best.formula, data = data.regression)
+
+best.indexes <- model.info[1:index.best.formula, 4] - 1
 
